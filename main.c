@@ -13,9 +13,13 @@
 
 void main (void){
    setup_oscillator(OSC_16MHZ);
+   //Puertos de salida
    set_tris_a(0);
    set_tris_b(0);
    set_tris_e(0);
+   //Puertos de entrada
+   set_tris_c(1);
+   set_tris_d(1);
 #ifdef __DEBUG_SERIAL__ //Deberiamos de proteger nuestras depuraciones de esta forma o usar una macro ya protegida.
    printf("Hola Mundo\n");//Puedes usar putc o printf. Revisa la documentación de CCS para ver que mas puedes hacer.
 #endif
