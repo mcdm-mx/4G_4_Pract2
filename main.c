@@ -126,7 +126,7 @@ void main (void){
                       }
                       if(resultado<1)
                       {//Error 2
-                          for(cont cont=4096;cont>0;cont/2);
+                          for(cont =4096;cont>0;cont/2);
                           {
                              output_a(cont);
                              delay_ms(200);
