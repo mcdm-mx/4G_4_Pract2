@@ -53,20 +53,17 @@ void main (void){
                 else
                    if(num1<num2)
                    {//error 1
-                       for(cont=0;cont<5;cont++)
-                       {
                        output_a(0b11111111);
                        delay_ms(500);
                        output_a(0b00000000);
-                       delay_ms(500);
-                       }
+                       delay_ms(500);                       
                    }
                    else
                    {
                       resultado = num1 - num2;
                       if(resultado<1)
                       {//error 2
-                          for(cont=4096;cont>0;cont/2);
+                          for(cont=4096;cont>=1;cont=cont/2)
                           {
                              output_a(cont);
                              delay_ms(200);
@@ -89,9 +86,11 @@ void main (void){
                          {
                             resultado = resultado + num1;
                          }
-                      if(resultado>8192)
+                      //8191 corresponde al valor maximo capas de mostrarse con
+                      //13 bits.
+                      if(resultado>8191)
                       {//Error 3
-                          for(cont=1;cont<4096;cont*2);
+                          for(cont=1;cont<4096;cont*2)
                           {
                              output_a(cont);
                              delay_ms(200);
@@ -126,7 +125,7 @@ void main (void){
                       }
                       if(resultado<1)
                       {//Error 2
-                          for(cont =4096;cont>0;cont/2);
+                          for(cont=4096;cont>0;cont=cont/2)
                           {
                              output_a(cont);
                              delay_ms(200);
