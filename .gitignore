@@ -45,4 +45,3 @@
 *.hex
 # Debug files
 *.dSYM/
-main.c
