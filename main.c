@@ -2,6 +2,11 @@
 #fuses HS, NOFCMEN, NOIESO, PUT, NOBROWNOUT, NOWDT
 #fuses NOPBADEN, NOMCLR, STVREN, NOLVP, NODEBUG
 #use delay(clock=16000000)
+#use fast_io(a)
+#use fast_io(b)
+#use fast_io(c)
+#use fast_io(d)
+#use fast_io(e)
 //#define __DEBUG_SERIAL__ //Si comentas esta linea se deshabilita el debug por serial y el PIN_C6 puede ser usado en forma digital I/O
 #ifdef __DEBUG_SERIAL__
    #define TX_232        PIN_C6
@@ -11,18 +16,22 @@
 void main (void){
    setup_oscillator(OSC_16MHZ);
    //Puertos de salida
-   set_tris_a(0);
-   set_tris_b(0b11110000);
-   set_tris_e(0b0000);
+   set_tris_a(0xc0);
+   set_tris_b(0xf0);
+   set_tris_e(0x08);
    //Puertos de entrada
-   set_tris_c(1);
-   set_tris_d(1);
+   set_tris_c(0x3f);
+   set_tris_d(0xff);
    //Declaracion de variables
-   long NumeroPuertoC; 
-   long NumeroPuertoD; 
+   int numeroPuertoC; 
+   int numeroPuertoD; 
    long cont=0;
    int  selec = 0;
    long resultado = 0; 
+   //Inicio con todos los leds apagados.
+   output_a(0b00000000);
+   output_b(0b00000000);
+   output_e(0b00000);
    //Codigo
    while(1)
       {
@@ -35,12 +44,12 @@ void main (void){
          if(input(pin_b7) == 1)
             selec = 4;
          //Obtencion del numero de entrada
-         NumeroPuertoC = (long)input_c();
-         NumeroPuertoD = (long)input_d();
+         numeroPuertoC = (long)input_c();
+         numeroPuertoD = (long)input_d();
          switch(selec)
             {
                case 1://Suma 
-                  resultado = NumeroPuertoC +  NumeroPuertoD;
+                  resultado = numeroPuertoC +  numeroPuertoD;
                   output_a(resultado);
                   output_b(resultado>>6);
                   output_c(resultado>>10);
@@ -55,7 +64,7 @@ void main (void){
                      }
                   else
                      {
-                        if(NumeroPuertoC<NumeroPuertoD)
+                        if(numeroPuertoC<numeroPuertoD)
                            {//error 1
                               output_a(0b11111111);
                               output_b(0b00001111);
@@ -68,7 +77,7 @@ void main (void){
                            }
                         else
                            {
-                              resultado = NumeroPuertoC - NumeroPuertoD;
+                              resultado = numeroPuertoC - numeroPuertoD;
                               if(resultado<1)
                                  {//error 2
                                     for(cont=4096;cont>=1;cont=cont/2)
@@ -101,7 +110,7 @@ void main (void){
                      }
                   else
                      {
-                         resultado = NumeroPuertoC * NumeroPuertoD;
+                         resultado = numeroPuertoC * numeroPuertoD;
                          //8191 corresponde al valor maximo 
                          //capas de mostrarse con 13 bits.
                          if(resultado>8191)
@@ -134,7 +143,7 @@ void main (void){
                         output_e(0b0111);
                      }
                   else
-                     {if(NumeroPuertoC < NumeroPuertoD)
+                     {if(numeroPuertoC < numeroPuertoD)
                          {//Error 1
                             output_a(0b11111111);
                             output_b(0b00001111);
@@ -147,7 +156,7 @@ void main (void){
                          }
                       else
                          {
-                            resultado = NumeroPuertoC / NumeroPuertoD;
+                            resultado = numeroPuertoC / numeroPuertoD;
                             if(resultado<1)
                                {//Error 2
                                   for(cont=4096;cont>0;cont=cont/2)
