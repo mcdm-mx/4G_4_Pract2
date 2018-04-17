@@ -23,8 +23,8 @@ void main (void){
    set_tris_c(0x3f);
    set_tris_d(0xff);
    //Declaracion de variables
-   int numeroPuertoC; 
-   int numeroPuertoD; 
+   int  numeroPuertoC; 
+   int  numeroPuertoD; 
    long cont=0;
    int  selec = 0;
    long resultado = 0; 
@@ -56,128 +56,38 @@ void main (void){
                   selec = 0;
                break;
                case 2://Resta
-                  if(input_c() == 0 || input_d() == 0 )
-                     {//error 4
-                        output_a(0b11111111);
-                        output_b(0b00001111);
-                        output_e(0b0111);
-                     }
-                  else
-                     {
-                        if(numeroPuertoC<numeroPuertoD)
-                           {//error 1
-                              output_a(0b11111111);
-                              output_b(0b00001111);
-                              output_e(0b0111);
-                               delay_ms(500);
-                              output_a(0b00000000);
-                              output_b(0b00000000);
-                              output_e(0b00000);
-                               delay_ms(500);                       
-                           }
-                        else
-                           {
-                              resultado = numeroPuertoC - numeroPuertoD;
-                              if(resultado<1)
-                                 {//error 2
-                                    for(cont=4096;cont>=1;cont=cont/2)
-                                       {
-                                          output_a(cont);
-                                          output_b(cont>>6);
-                                          output_e(cont>>10);
-                                          delay_ms(200);
-                                       }
-                                    output_a(0b00000000);
-                                    output_b(0b00000000);
-                                    output_e(0b00000);
-                                 }
-                              else
-                                 { 
-                                    output_a(resultado);
-                                    output_b(resultado>>6);
-                                    output_e(resultado>>10);
-                                 }
-                           }
-                     }
+                  resultado = numeroPuertoC - numeroPuertoD;
+                  output_a(resultado);
+                  output_b(resultado>>6);
+                  output_e(resultado>>10);
                   selec = 0;
                break;
                case 3://Multi
-                  if((long)input_c() == 0 || (long)input_d() == 0 )
-                     {//error 4
-                        output_a(0b11111111);
-                        output_b(0b00001111);
-                        output_e(0b0111);
-                     }
-                  else
-                     {
-                         resultado = numeroPuertoC * numeroPuertoD;
-                         //8191 corresponde al valor maximo 
-                         //capas de mostrarse con 13 bits.
-                         if(resultado>8191)
-                            {//Error 3
-                               for(cont=1;cont<=4096;cont=cont*2)
-                                  {
-                                     output_a(cont);
-                                     output_b(cont>>6);
-                                     output_e(cont>>10);
-                                     delay_ms(200);
-                                  }
-                               output_a(0b00000000);
-                               output_b(0b00000000);
-                               output_e(0b00000);
-                            }
-                         else
-                            {
-                               output_a(resultado);
-                               output_b(resultado>>6);
-                               output_e(resultado>>10);
-                            }
-                     }
+                  resultado = numeroPuertoC * numeroPuertoD;
+                  output_a(resultado);
+                  output_b(resultado>>6);
+                  output_e(resultado>>10);
                   selec = 0 ;
                break;
                case 4://Division
-                  if((long)input_c() == 0 || (long)input_d() == 0 )
-                     {//Error 4
+                  if(numeroPuertoC < numeroPuertoD)
+                     {//Error 1
                         output_a(0b11111111);
                         output_b(0b00001111);
                         output_e(0b0111);
+                        delay_ms(500);
+                        output_a(0b00000000);
+                        output_b(0b00000000);
+                        output_e(0b00000);
+                        delay_ms(500);   
                      }
-                  else
-                     {if(numeroPuertoC < numeroPuertoD)
-                         {//Error 1
-                            output_a(0b11111111);
-                            output_b(0b00001111);
-                            output_e(0b0111);
-                             delay_ms(500);
-                            output_a(0b00000000);
-                            output_b(0b00000000);
-                            output_e(0b00000);
-                             delay_ms(500);   
-                         }
-                      else
-                         {
-                            resultado = numeroPuertoC / numeroPuertoD;
-                            if(resultado<1)
-                               {//Error 2
-                                  for(cont=4096;cont>0;cont=cont/2)
-                                     {
-                                        output_a(cont);
-                                        output_b(cont>>6);
-                                        output_e(cont>>10);
-                                         delay_ms(200);
-                                     }
-                                  output_a(0b00000000);
-                                  output_b(0b00000000);
-                                  output_e(0b00000);
-                               }
-                            else
-                               {
-                                  output_a(resultado);
-                                  output_b(resultado>>6);
-                                  output_e(resultado>>10);
-                               }
-                         }
-                     }
+                    else
+                      {
+                         resultado = numeroPuertoC / numeroPuertoD;
+                         output_a(resultado);
+                         output_b(resultado>>6);
+                         output_e(resultado>>10);       
+                      }
                   selec = 0; 
                break;
             }
